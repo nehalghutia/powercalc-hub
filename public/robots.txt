@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+# After choosing a verified production domain, add:
+# Sitemap: https://your-domain.example/sitemap-index.xml

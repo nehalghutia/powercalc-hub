@@ -1,0 +1,14 @@
+---
+// Analytics disabled until a public measurement ID is explicitly configured.
+const id = import.meta.env.PUBLIC_GA_MEASUREMENT_ID;
+---
+{id && /^G-[A-Z0-9]+$/.test(id) && <script is:inline define:vars={{id}}>
+  const script = document.createElement("script");
+  script.async = true;
+  script.src = `https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent(id)}`;
+  document.head.append(script);
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){window.dataLayer.push(arguments);}
+  gtag("js",new Date());
+  gtag("config",id);
+</script>}

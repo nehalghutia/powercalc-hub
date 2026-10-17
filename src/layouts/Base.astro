@@ -1,0 +1,460 @@
+---
+import '../styles/global.css';
+import Analytics from '../components/Analytics.astro';
+const {
+  title = 'Free Power, Battery, Inverter & Solar Calculators',
+  description = 'Free, transparent power and energy calculators for batteries, inverters, UPS, solar, appliances and generators.',
+} = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site ?? 'https://powercalc-hub.vercel.app');
+---
+
+<!doctype html>
+<html lang="en">
+  <head
+    ><meta charset="utf-8" /><meta
+      name="viewport"
+      content="width=device-width,initial-scale=1"
+    /><meta name="theme-color" content="#101b2d" /><title>{title} | PowerCalc Hub</title><meta
+      name="description"
+      content={description}
+    /><link rel="canonical" href={canonical.toString()} />{
+      (import.meta.env.VERCEL_ENV !== 'production' || !import.meta.env.PUBLIC_SITE_URL) && (
+        <meta name="robots" content="noindex, nofollow" />
+      )
+    }<meta name="twitter:card" content="summary" /><meta
+      name="twitter:title"
+      content={`${title} | PowerCalc Hub`}
+    /><meta name="twitter:description" content={description} /><meta
+      property="og:type"
+      content="website"
+    /><meta property="og:title" content={`${title} | PowerCalc Hub`} /><meta
+      property="og:description"
+      content={description}
+    /><meta property="og:url" content={canonical.toString()} /><script
+      type="application/ld+json"
+      set:html={JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'WebSite',
+        name: 'PowerCalc Hub',
+        url: new URL('/', canonical).toString(),
+      })}
+    /><script is:inline>
+      try {
+        document.documentElement.dataset.theme = localStorage.getItem('theme') || 'light';
+      } catch {}
+    </script><Analytics /></head
+  >
+  <body
+    ><header class="top">
+      <div class="wrap nav">
+        <a class="logo" href="/"><span class="logoicon">⚡</span> PowerCalc <b>Hub</b></a><nav
+          aria-label="Main navigation"
+        >
+          <a href="/#calculators">Calculators</a><a href="/about">About</a><button
+            id="theme"
+            aria-label="Toggle dark mode"
+            type="button">◐ <span>Theme</span></button>
+        </nav>
+      </div>
+    </header><main class="wrap"><slot /></main><footer>
+      <div class="wrap">
+        <p><strong>PowerCalc Hub</strong> · Independent, free electrical planning tools.</p><p>
+          Calculator results are estimates. Actual electrical performance depends on equipment
+          specifications, condition, temperature, installation, battery age, wiring, power factor
+          and other factors. Verify equipment sizing with a qualified electrician or installer.
+        </p><p>
+          <a href="/about">About & methodology</a> · <a href="/privacy">Privacy</a> · <a
+            href="/#calculators">All calculators</a>
+        </p>
+      </div>
+    </footer><script is:inline>
+      document.querySelector('#theme')?.addEventListener('click', () => {
+        const t = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
+        document.documentElement.dataset.theme = t;
+        try {
+          localStorage.setItem('theme', t);
+        } catch {}
+      });
+    </script></body>
+</html>
+<style is:global>
+  :root {
+    font-family:
+      Inter,
+      ui-sans-serif,
+      system-ui,
+      -apple-system,
+      'Segoe UI',
+      sans-serif;
+    color: #18283f;
+    background: #f5f8fc;
+    font-synthesis: none;
+  }
+  * {
+    box-sizing: border-box;
+  }
+  body {
+    margin: 0;
+    line-height: 1.55;
+  }
+  a {
+    color: #1265bc;
+    text-decoration: none;
+  }
+  a:hover {
+    text-decoration: underline;
+  }
+  button,
+  input,
+  select {
+    font: inherit;
+  }
+  button {
+    cursor: pointer;
+  }
+  .wrap {
+    max-width: 1120px;
+    margin: auto;
+    padding: 0 20px;
+  }
+  .top {
+    background: #fff;
+    border-bottom: 1px solid #e2e9f2;
+    position: sticky;
+    top: 0;
+    z-index: 5;
+  }
+  .nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    min-height: 72px;
+  }
+  .logo {
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: #142c4b;
+    white-space: nowrap;
+  }
+  .logo b {
+    color: #188a7b;
+  }
+  .logoicon {
+    background: #e0f7ee;
+    padding: 7px;
+    border-radius: 12px;
+  }
+  .nav nav {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+  }
+  .nav button {
+    border: 1px solid #d9e3ec;
+    background: transparent;
+    border-radius: 10px;
+    padding: 7px 12px;
+    color: inherit;
+  }
+  .hero {
+    padding: 65px 0 30px;
+  }
+  .eyebrow {
+    color: #008b76;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-size: 0.76rem;
+  }
+  h1 {
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    letter-spacing: -0.045em;
+    line-height: 1.13;
+    margin: 12px 0;
+  }
+  h2 {
+    font-size: 1.45rem;
+    letter-spacing: -0.02em;
+    margin: 0 0 18px;
+  }
+  h3 {
+    font-size: 1.05rem;
+    margin: 0 0 10px;
+  }
+  p {
+    margin: 10px 0 18px;
+  }
+  .muted {
+    color: #607086;
+  }
+  .section {
+    margin: 38px 0;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+  }
+  .card,
+  .panel {
+    background: #fff;
+    border: 1px solid #e1e8f1;
+    border-radius: 18px;
+    padding: 22px;
+    box-shadow: 0 8px 24px #1a3a5d08;
+  }
+  .card {
+    display: block;
+    color: inherit;
+    transition:
+      transform 0.15s,
+      border-color 0.15s;
+  }
+  .card:hover {
+    transform: translateY(-2px);
+    border-color: #80b7df;
+    text-decoration: none;
+  }
+  .pill {
+    font-size: 0.76rem;
+    color: #00816d;
+    font-weight: 700;
+  }
+  .card p {
+    font-size: 0.9rem;
+    color: #607086;
+    margin: 8px 0 0;
+  }
+  .ad {
+    min-height: 100px;
+    border: 1px dashed #b9c6d4;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #7a8b9c;
+    font-size: 0.75rem;
+    margin: 24px 0;
+    background: linear-gradient(110deg, #f7f9fc, #edf2f8);
+  }
+  .crumb {
+    font-size: 0.84rem;
+    color: #607086;
+    margin: 28px 0;
+  }
+  .toolhead {
+    max-width: 850px;
+  }
+  .calcgrid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.5fr) minmax(280px, 1fr);
+    gap: 20px;
+    align-items: start;
+  }
+  .fields {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+  }
+  .field label {
+    display: block;
+    font-size: 0.88rem;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+  .field input,
+  .field select,
+  .search {
+    display: block;
+    width: 100%;
+    border: 1px solid #c9d5e2;
+    border-radius: 11px;
+    padding: 12px;
+    background: transparent;
+    color: inherit;
+    min-height: 46px;
+  }
+  .field small {
+    color: #64748b;
+  }
+  .field input:focus,
+  .search:focus,
+  button:focus-visible,
+  a:focus-visible {
+    outline: 3px solid #4eaccd;
+    outline-offset: 2px;
+  }
+  .primary {
+    border: 0;
+    background: #087e70;
+    color: white;
+    padding: 13px 22px;
+    border-radius: 11px;
+    font-weight: 800;
+    margin-top: 18px;
+  }
+  .result {
+    background: linear-gradient(145deg, #123b59, #102b42);
+    color: white;
+    border-radius: 18px;
+    padding: 26px;
+    min-height: 240px;
+  }
+  .result .big {
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
+    font-weight: 850;
+    letter-spacing: -0.03em;
+    overflow-wrap: anywhere;
+  }
+  .result small {
+    color: #b8d6e5;
+  }
+  .result p {
+    color: #d3e5ed;
+  }
+  .note {
+    border-left: 3px solid #0a9585;
+    padding: 12px 16px;
+    background: #eaf7f3;
+    border-radius: 6px;
+  }
+  .info {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+  }
+  .info section {
+    background: #fff;
+    border: 1px solid #e1e8f1;
+    padding: 20px;
+    border-radius: 16px;
+  }
+  .info ul {
+    padding-left: 20px;
+  }
+  .presetrow {
+    display: grid;
+    grid-template-columns: 1fr 90px 80px;
+    gap: 8px;
+    align-items: center;
+    margin: 8px 0;
+  }
+  .presetrow input {
+    min-width: 0;
+    width: 100%;
+    border: 1px solid #c9d5e2;
+    padding: 9px;
+    border-radius: 8px;
+    background: transparent;
+    color: inherit;
+  }
+  .presetrow label {
+    font-size: 0.86rem;
+  }
+  footer {
+    margin-top: 70px;
+    padding: 35px 0;
+    background: #eaf0f6;
+    color: #54677e;
+    font-size: 0.85rem;
+  }
+  footer p {
+    max-width: 950px;
+  }
+  html[data-theme='dark'] {
+    color: #e7edf5;
+    background: #0c1727;
+  }
+  html[data-theme='dark'] .top,
+  html[data-theme='dark'] .card,
+  html[data-theme='dark'] .panel,
+  html[data-theme='dark'] .info section {
+    background: #15263b;
+    border-color: #294058;
+  }
+  html[data-theme='dark'] .logo {
+    color: #e7edf5;
+  }
+  html[data-theme='dark'] .muted,
+  html[data-theme='dark'] .card p {
+    color: #a7b8ca;
+  }
+  html[data-theme='dark'] .ad {
+    background: #172a40;
+    border-color: #38516b;
+  }
+  html[data-theme='dark'] footer {
+    background: #132237;
+    color: #adbdcf;
+  }
+  html[data-theme='dark'] .note {
+    background: #163c38;
+    color: #d7f6ef;
+  }
+  html[data-theme='dark'] input {
+    color-scheme: dark;
+  }
+  html[data-theme='dark'] select {
+    color-scheme: dark;
+  }
+  @media (max-width: 780px) {
+    .grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .calcgrid,
+    .info {
+      grid-template-columns: 1fr;
+    }
+    .hero {
+      padding: 40px 0 20px;
+    }
+  }
+  [hidden] {
+    display: none !important;
+  }
+  select:focus-visible {
+    outline: 3px solid #4eaccd;
+    outline-offset: 2px;
+  }
+  @media (max-width: 490px) {
+    .nav {
+      flex-wrap: wrap;
+      padding-top: 12px;
+      padding-bottom: 12px;
+    }
+    .nav nav {
+      width: 100%;
+      justify-content: space-between;
+    }
+    .wrap {
+      padding: 0 15px;
+    }
+    .grid,
+    .fields {
+      grid-template-columns: 1fr;
+    }
+    .nav nav {
+      gap: 10px;
+    }
+    .nav nav a {
+      font-size: 0.83rem;
+    }
+    .nav button span {
+      display: none;
+    }
+    .logo {
+      font-size: 1rem;
+    }
+    .card,
+    .panel {
+      padding: 17px;
+    }
+    .presetrow {
+      grid-template-columns: 1fr 70px 65px;
+    }
+    .hero {
+      padding-top: 30px;
+    }
+  }
+</style>

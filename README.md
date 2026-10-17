@@ -4,7 +4,7 @@ Static-first power, battery, inverter, UPS, solar and generator calculators buil
 
 ## Setup
 
-Use GitHub Codespaces (Node.js 22 or later):
+Use GitHub Codespaces (Node.js 22.22 or later (Node.js 24 recommended)):
 
 ```bash
 npm install
@@ -20,4 +20,21 @@ Import this repository into Vercel, select Astro, build command `npm run build`,
 
 ## Status
 
-The full prepared source bundle still needs to be imported into this repository. Do not deploy until the full project is uploaded and verified.
+The complete Astro source is imported. Review feature-branch verification and preview before production.
+
+## Architecture
+
+- `src/pages/` homepage, information pages, and statically generated calculator routes
+- `src/lib/data.ts` calculator definitions, fields, SEO content and appliance presets
+- `src/lib/calculate.ts` browser-safe numeric calculation engine
+- `src/components/` reusable analytics and future advertising placeholders
+- `src/layouts/Base.astro` page metadata, navigation and responsive layout
+- `src/styles/global.css` Tailwind v4 CSS entry
+- `tests/` dependency-free Node calculation tests
+- `public/` favicon and robots
+
+To add a calculator, add its metadata and field definitions in `src/lib/data.ts`, implement its validated formula in `src/lib/calculate.ts`, and add numerical test cases. The dynamic `[slug].astro` route statically generates the URL.
+
+## Preview indexing
+
+Previews use noindex, nofollow. Production requires VERCEL_ENV=production and PUBLIC_SITE_URL set to the verified canonical domain. No secrets belong in PUBLIC_ variables.

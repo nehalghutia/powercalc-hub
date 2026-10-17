@@ -6,3 +6,6 @@ dist/
 !.env.example
 .vercel/
 .DS_Store
+
+powercalc-hub-setup-updated.zip
+*.log

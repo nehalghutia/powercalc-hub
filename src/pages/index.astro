@@ -1,0 +1,74 @@
+---
+import Base from '../layouts/Base.astro';
+import { tools } from '../lib/data';
+---
+
+<Base
+  ><section class="hero">
+    <div class="eyebrow">Smarter energy decisions</div><h1>
+      Power calculations,<br /><span style="color:#008c7d">made simple.</span>
+    </h1><p class="muted">
+      Free power, battery, inverter and solar calculators. Transparent formulas, adjustable
+      assumptions, no sign-up.
+    </p><label for="search" class="muted">Find a calculator</label><input
+      id="search"
+      class="search"
+      type="search"
+      placeholder="Try battery backup, UPS, solar, electricity…"
+      style="max-width:600px"
+    />
+  </section><section id="calculators" class="section">
+    <h2>Popular calculators</h2><div class="grid" id="cards">
+      {
+        tools.map(([slug, name, category, description]) => (
+          <a
+            class="card"
+            data-name={`${name} ${category}`.toLowerCase()}
+            href={`/calculators/${slug}`}
+          >
+            <>
+              <span class="pill">{category}</span>
+              <h3 style="margin-top:10px">{name} →</h3>
+              <p>{description}</p>
+            </>
+          </a>
+        ))
+      }
+    </div><p id="empty" hidden>No matching calculators. Try another keyword.</p>
+  </section><div class="ad" aria-label="Reserved advertising space">
+    Reserved space for future advertising
+  </div><section class="section">
+    <h2>Browse by category</h2><div class="grid">
+      {
+        ['Battery & Inverter', 'Solar', 'UPS', 'Electricity', 'Generator'].map((c) => (
+          <a class="card" href={`/#calculators`}>
+            <>
+              <h3>{c} →</h3>
+              <p>{tools.filter((t) => t[2] === c).length} ready-to-use tools</p>
+            </>
+          </a>
+        ))
+      }
+    </div>
+  </section><section class="section panel">
+    <h2>How our estimates work</h2><p>
+      Each calculator uses published electrical relationships, shows the formula and lets you edit
+      important assumptions. A battery’s label capacity is not the same as its delivered energy, and
+      a solar panel does not produce nameplate power all day.
+    </p><p>
+      Results are planning estimates, not electrical installation instructions. Always check product
+      specifications and consult a qualified professional for system design.
+    </p>
+  </section><script is:inline>
+    const s = document.querySelector('#search');
+    s?.addEventListener('input', () => {
+      let n = 0;
+      document.querySelectorAll('#cards .card').forEach((c) => {
+        const yes = c.dataset.name.includes(s.value.toLowerCase());
+        c.hidden = !yes;
+        if (yes) n++;
+      });
+      document.querySelector('#empty').hidden = n !== 0;
+    });
+  </script></Base
+>
