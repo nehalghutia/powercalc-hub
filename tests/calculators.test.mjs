@@ -34,3 +34,13 @@ test('reject fractional appliance count', () =>
   assert.throws(() => calculate('appliance-load', { load: 0 }, [{ qty: 0.5, watts: 75 }])));
 test('reject invalid power factor', () =>
   assert.throws(() => calculate('inverter-size', { load: 600, pf: 1.2, margin: 25, surge: 2 })));
+
+for (const [slug, inputs, , rows] of cases) {
+  for (const key of Object.keys(inputs)) {
+    test(slug + ': reject missing ' + key, () => {
+      const incomplete = { ...inputs };
+      delete incomplete[key];
+      assert.throws(() => calculate(slug, incomplete, rows));
+    });
+  }
+}

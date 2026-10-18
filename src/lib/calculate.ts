@@ -1,7 +1,10 @@
 type Result = { value: string; detail: string };
 type Inputs = Record<string, number>;
-const fmt = (v: number, d = 2) =>
-  new Intl.NumberFormat('en-US', { maximumFractionDigits: d }).format(v);
+const fmt = (v: number, d = 2) => {
+  if (!Number.isFinite(v))
+    throw Error('Complete all required calculator inputs with valid numbers.');
+  return new Intl.NumberFormat('en-US', { maximumFractionDigits: d }).format(v);
+};
 function check(f: Inputs) {
   for (const [k, v] of Object.entries(f)) {
     if (!Number.isFinite(v) || v < 0 || v > 1e10)

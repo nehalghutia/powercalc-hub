@@ -9,7 +9,8 @@
     "test": "node --experimental-strip-types --test tests/*.test.mjs",
     "astro": "astro",
     "check": "astro check",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "verify:build": "node --experimental-strip-types scripts/verify-build.mjs"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.4",
@@ -24,6 +25,6 @@
     "typescript": "^5.0.0"
   },
   "engines": {
-    "node": ">=22.22.0"
+    "node": "^22.22.0 || ^24.0.0"
   }
 }

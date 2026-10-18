@@ -38,3 +38,5 @@ To add a calculator, add its metadata and field definitions in `src/lib/data.ts`
 ## Preview indexing
 
 Previews use noindex, nofollow. Production requires VERCEL_ENV=production and PUBLIC_SITE_URL set to the verified canonical domain. No secrets belong in PUBLIC_ variables.
+
+Build verification: run `npm run verify:build` after `npm run build` to check all ten calculator pages, their compiled scripts, and sitemap coverage.
