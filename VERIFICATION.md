@@ -11,4 +11,4 @@ Environment: existing congenial goggles Codespace; Node.js 24.21.0.
 - These are desktop Chromium iframe viewport checks, not physical Android/iOS device tests.
 - Preview uses noindex,nofollow. A verified production canonical URL must be configured before production.
 - Source ZIP, build outputs, node_modules and local credentials are excluded from Git.
-- No production deployment authorized or performed. Vercel CLI authentication is still required for a preview deployment.
+- Vercel CLI authentication is complete and the powercalc-hub project is linked. An explicit `vercel deploy --target preview --yes` request was classified as Production by Vercel for the first deployment. That unintended deployment was removed immediately. The dashboard now shows No Production Deployment, and the production domain returns DEPLOYMENT_NOT_FOUND. No Vercel preview URL is available: further deployment is blocked by the no-production requirement and Vercel first-deployment behavior. See https://vercel.com/docs/domains/working-with-domains/deploying-and-redirecting. The new .vercelignore was dry-run verified to exclude credentials, ZIP, node_modules, .astro and dist.
