@@ -935,4 +935,26 @@ const canonical = new URL(Astro.url.pathname, Astro.site ?? 'https://powercalc-h
       transform: none;
     }
   }
+
+  /* Keep the decorative charge symbol crisp across operating-system fonts. */
+  .energy-bolt {
+    width: 42px;
+    height: 73px;
+    margin: 30px auto 0;
+    font-size: 0;
+    background: #e7fff4;
+    clip-path: polygon(54% 0, 8% 56%, 43% 56%, 29% 100%, 93% 38%, 58% 38%, 76% 0);
+  }
+  html[data-theme='dark'] .nav nav a,
+  html[data-theme='dark'] footer a,
+  html[data-theme='dark'] .crumb a {
+    color: #9bd4fa;
+  }
+  @media (max-width: 490px) {
+    .energy-bolt {
+      width: 35px;
+      height: 60px;
+      margin-top: 26px;
+    }
+  }
 </style>
