@@ -1,0 +1,232 @@
+---
+import Base from '../../layouts/Base.astro';
+import { tools, definitions, presets } from '../../lib/data';
+export function getStaticPaths() {
+  return tools.map((t) => ({ params: { slug: t[0] }, props: { tool: t } }));
+}
+const { tool } = Astro.props;
+const [slug, name, category, description] = tool;
+const d = definitions[slug];
+const related = tools.filter((t) => t[0] !== slug && t[2] === category).slice(0, 3);
+const ld = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    {
+      '@type': 'ListItem',
+      position: 1,
+      name: 'Home',
+      item: new URL('/', Astro.site ?? 'https://powercalc-hub.vercel.app').toString(),
+    },
+    { '@type': 'ListItem', position: 2, name: name, item: Astro.url.toString() },
+  ],
+};
+---
+
+<Base
+  title={`${name} Calculator`}
+  description={`${description} Free calculator with editable inputs, formulas, assumptions and worked examples.`}
+  ><script type="application/ld+json" set:html={JSON.stringify(ld)} /><div class="crumb">
+    <a href="/">Home</a> / <a href="/#calculators">Calculators</a> / {name}
+  </div><div class="toolhead">
+    <span class="eyebrow">{category} · Free calculator</span><h1>{name} Calculator</h1><p
+      class="muted"
+    >
+      {description} Change inputs to get an instant estimate, then review the formula and limitations.
+    </p>
+  </div><div class="calcgrid section">
+    <div class="panel">
+      <h2>Enter your details</h2><form id="calculator" data-tool={slug} novalidate>
+        {
+          slug === 'inverter-battery-backup' ||
+          slug === 'battery-ah-required' ||
+          slug === 'ups-runtime' ? (
+            <div class="field" style="margin-bottom:16px">
+              <label for="chem">Battery chemistry</label>
+              <select id="chem">
+                <option value="lead">Lead-acid</option>
+                <option value="agm">AGM</option>
+                <option value="gel">Gel</option>
+                <option value="lfp">LiFePO4</option>
+                <option value="liion">Lithium-ion</option>
+              </select>
+              <small>Updates suggested discharge depth; you can override it.</small>
+            </div>
+          ) : null
+        }<div class="fields">
+          {
+            d.fields.map(([key, label, value, unit, kind]) => (
+              <div class="field">
+                <label for={key}>
+                  {label} ({unit})
+                </label>
+                {kind === 'voltage' ? (
+                  <select id={key} name={key}>
+                    {[12, 24, 36, 48].map((v) => (
+                      <option value={v} selected={v === value}>
+                        {v} V
+                      </option>
+                    ))}
+                  </select>
+                ) : (
+                  <input
+                    id={key}
+                    name={key}
+                    type="number"
+                    step="any"
+                    value={value}
+                    min="0"
+                    required
+                  />
+                )}
+              </div>
+            ))
+          }
+        </div>{
+          slug === 'appliance-load' ? (
+            <div class="preset-table">
+              <h3>Appliance presets — editable estimates</h3>
+              <p class="muted">Enter quantity and measured or nameplate watts.</p>
+              <>
+                <div class="preset-header" aria-hidden="true">
+                  <>
+                    <span>Appliance</span>
+                    <span>Qty</span>
+                    <span>Watts each</span>
+                  </>
+                </div>
+                <div id="appliances">
+                  {presets.map(([label, watts], i) => (
+                    <div class="presetrow">
+                      <label for={`qty-${i}`}>{label}</label>
+                      <input
+                        id={`qty-${i}`}
+                        aria-label={`${label} quantity`}
+                        class="qty"
+                        type="number"
+                        min="0"
+                        max="100000"
+                        step="1"
+                        value="0"
+                      />
+                      <input
+                        aria-label={`${label} watts each`}
+                        class="watts"
+                        type="number"
+                        min="0"
+                        step="any"
+                        value={watts}
+                      />
+                    </div>
+                  ))}
+                </div>
+              </>
+            </div>
+          ) : null
+        }<p id="error" role="alert" hidden></p><button class="primary" type="submit"
+          >Calculate result →</button
+        >
+      </form>
+    </div><div class="sticky-col">
+      <div class="result" role="status" aria-live="polite" aria-atomic="true">
+        <div class="result-header">
+          <span class="status-dot" aria-hidden="true"></span><span>Estimated result</span>
+        </div><div class="big" id="answer">—</div><p id="detail">
+          Adjust values to see your estimate.
+        </p>
+      </div><div class="ad" aria-label="Reserved advertising space">Future ad placement</div><div
+        class="panel"
+      >
+        <h3>Important note</h3><p class="muted">
+          Estimates only. Check equipment ratings, installation requirements and battery or
+          generator manufacturer guidance.
+        </p>
+      </div>
+    </div>
+  </div><div class="info section">
+    <section>
+      <h2>Formula used</h2><div class="formula-box">{d.formula}</div><h3>Worked example</h3><p>
+        {d.example}
+      </p>
+    </section><section>
+      <h2>Assumptions</h2><p>{d.assumptions}</p><h3>Common mistakes</h3><ul>
+        {d.mistakes.map((m) => <li>{m}</li>)}
+      </ul>
+    </section>
+  </div><section class="panel section">
+    <h2>Frequently asked questions</h2>{
+      d.faq.map(([q, a]) => (
+        <div class="faq-item">
+          <h3>{q}</h3>
+          <p class="muted">{a}</p>
+        </div>
+      ))
+    }
+  </section><section class="section">
+    <h2>Related calculators</h2><div class="grid">
+      {
+        (related.length ? related : tools.filter((t) => t[0] !== slug).slice(0, 3)).map((t) => (
+          <a class="card" href={`/calculators/${t[0]}`}>
+            <div class="card-top">
+              <span class="pill">{t[2]}</span>
+            </div>
+            <h3>
+              <>
+                <span>{t[1]}</span>
+                <span class="arrow" aria-hidden="true">
+                  →
+                </span>
+              </>
+            </h3>
+          </a>
+        ))
+      }
+    </div>
+  </section><script>
+    import { calculate } from '../../lib/calculate';
+    const form = document.querySelector<HTMLFormElement>('#calculator')!;
+    const err = document.querySelector<HTMLElement>('#error')!;
+    const output = document.querySelector<HTMLElement>('#answer')!;
+    const detail = document.querySelector<HTMLElement>('#detail')!;
+    const chem = document.querySelector<HTMLSelectElement>('#chem');
+    chem?.addEventListener('change', () => {
+      const dod = form.querySelector<HTMLInputElement>('#dod');
+      if (dod)
+        dod.value = String(
+          ({ lead: 50, agm: 50, gel: 50, lfp: 90, liion: 80 } as Record<string, number>)[
+            chem.value
+          ],
+        );
+      run();
+    });
+    function run() {
+      const fields = Object.fromEntries(
+        [...form.querySelectorAll<HTMLInputElement | HTMLSelectElement>('[name]')].map((e) => [
+          e.name,
+          Number(e.value),
+        ]),
+      );
+      const applianceRows = [...form.querySelectorAll<HTMLElement>('.presetrow')].map((e) => ({
+        qty: Number(e.querySelector<HTMLInputElement>('.qty')?.value),
+        watts: Number(e.querySelector<HTMLInputElement>('.watts')?.value),
+      }));
+      try {
+        const result = calculate(form.dataset.tool!, fields, applianceRows);
+        output.textContent = result.value;
+        detail.textContent = result.detail;
+        err.hidden = true;
+      } catch (e) {
+        output.textContent = '—';
+        detail.textContent = 'Check your inputs';
+        err.textContent = e instanceof Error ? e.message : 'Invalid values';
+        err.hidden = false;
+      }
+    }
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      run();
+    });
+    form.addEventListener('input', run);
+    run();
+  </script></Base
+>

@@ -1,0 +1,10 @@
+.git/
+.astro/
+dist/
+node_modules/
+.vercel/
+.env
+.env.*
+!.env.example
+powercalc-hub-setup-updated.zip
+*.log

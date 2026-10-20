@@ -1,0 +1,129 @@
+---
+import Base from '../layouts/Base.astro';
+import { tools } from '../lib/data';
+---
+
+<Base
+  ><section class="hero hero-depth">
+    <div class="hero-copy">
+      <div class="eyebrow">Smarter energy decisions</div><h1>
+        Power calculations,<br /><span class="highlight">made simple.</span>
+      </h1><p class="muted">
+        Free power, battery, inverter and solar calculators. Transparent formulas, adjustable
+        assumptions, no sign-up.
+      </p><label for="search" class="muted">Find a calculator</label><input
+        id="search"
+        class="search"
+        type="search"
+        placeholder="Try battery backup, UPS, solar, electricity…"
+        style="max-width:600px"
+      />
+    </div><div class="energy-scene" aria-hidden="true">
+      <div class="scene-halo"></div><div class="scene-orbit"></div><div class="energy-platform">
+      </div><div class="energy-sun"></div><div class="energy-battery">
+        <span class="energy-bolt"></span><span class="energy-bars"
+          ><i></i><i></i><i></i><i></i></span
+        >
+      </div><div class="energy-panel"></div><div class="energy-spark">✦</div><span
+        class="scene-caption">A little clarity. A lot of energy.</span
+      >
+    </div>
+  </section><section id="calculators" class="section">
+    <h2>Popular calculators</h2><div class="grid" id="cards">
+      {
+        tools.map(([slug, name, category, description]) => (
+          <a
+            class="card"
+            data-name={`${name} ${category}`.toLowerCase()}
+            data-category={category.toLowerCase()}
+            href={`/calculators/${slug}`}
+          >
+            <div class="card-top">
+              <span class="tool-icon" aria-hidden="true">
+                {category === 'Solar'
+                  ? '☀'
+                  : category === 'Electricity'
+                    ? 'ϟ'
+                    : category === 'Generator'
+                      ? '↻'
+                      : category === 'UPS'
+                        ? '▣'
+                        : '▰'}
+              </span>
+              <span class="pill">{category}</span>
+            </div>
+
+            <h3>
+              <>
+                <span>{name}</span>
+                <span class="arrow" aria-hidden="true">
+                  →
+                </span>
+              </>
+            </h3>
+            <p>{description}</p>
+          </a>
+        ))
+      }
+    </div><p id="empty" hidden>No matching calculators. Try another keyword.</p>
+  </section><div class="ad" aria-label="Reserved advertising space">
+    Reserved space for future advertising
+  </div><section class="section">
+    <h2>Browse by category</h2><div class="grid">
+      {
+        ['Battery & Inverter', 'Solar', 'UPS', 'Electricity', 'Generator'].map((c) => (
+          <a class="card" href="/#calculators" data-category-filter={c.toLowerCase()}>
+            <h3>
+              <>
+                <span>{c}</span>
+                <span class="arrow" aria-hidden="true">
+                  →
+                </span>
+              </>
+            </h3>
+            <p>{tools.filter((t) => t[2] === c).length} ready-to-use tools</p>
+          </a>
+        ))
+      }
+    </div>
+  </section><section class="section panel">
+    <h2>How our estimates work</h2><p>
+      Each calculator uses published electrical relationships, shows the formula and lets you edit
+      important assumptions. A battery’s label capacity is not the same as its delivered energy, and
+      a solar panel does not produce nameplate power all day.
+    </p><p>
+      Results are planning estimates, not electrical installation instructions. Always check product
+      specifications and consult a qualified professional for system design.
+    </p>
+  </section><script>
+    const search = document.querySelector<HTMLInputElement>('#search');
+    const empty = document.querySelector<HTMLElement>('#empty');
+    const cards = document.querySelectorAll<HTMLAnchorElement>('#cards .card');
+    function filterCards(query: string, category?: string) {
+      const q = query.trim().toLowerCase();
+      let count = 0;
+      cards.forEach((card) => {
+        const matches = category
+          ? card.dataset.category === category
+          : !q || (card.dataset.name ?? '').includes(q);
+        card.hidden = !matches;
+        if (matches) count++;
+      });
+      if (empty) empty.hidden = count !== 0;
+    }
+    search?.addEventListener('input', () => filterCards(search.value));
+    document.querySelectorAll<HTMLAnchorElement>('[data-category-filter]').forEach((link) => {
+      link.addEventListener('click', (event) => {
+        const category = link.dataset.categoryFilter;
+        if (!category || !search) return;
+        event.preventDefault();
+        search.value = category;
+        filterCards('', category);
+        if (location.hash !== '#calculators') history.pushState(null, '', '#calculators');
+        document.querySelector('#calculators')?.scrollIntoView({
+          behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth',
+        });
+      });
+    });
+  </script></Base
+>
