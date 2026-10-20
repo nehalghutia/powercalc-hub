@@ -42,19 +42,15 @@ const ld = {
           slug === 'battery-ah-required' ||
           slug === 'ups-runtime' ? (
             <div class="field" style="margin-bottom:16px">
-              <>
-                <label for="chem">Battery chemistry</label>
-                <select id="chem">
-                  <>
-                    <option value="lead">Lead-acid</option>
-                    <option value="agm">AGM</option>
-                    <option value="gel">Gel</option>
-                    <option value="lfp">LiFePO4</option>
-                    <option value="liion">Lithium-ion</option>
-                  </>
-                </select>
-                <small>Updates suggested discharge depth; you can override it.</small>
-              </>
+              <label for="chem">Battery chemistry</label>
+              <select id="chem">
+                <option value="lead">Lead-acid</option>
+                <option value="agm">AGM</option>
+                <option value="gel">Gel</option>
+                <option value="lfp">LiFePO4</option>
+                <option value="liion">Lithium-ion</option>
+              </select>
+              <small>Updates suggested discharge depth; you can override it.</small>
             </div>
           ) : null
         }<div class="fields">
@@ -88,10 +84,17 @@ const ld = {
           }
         </div>{
           slug === 'appliance-load' ? (
-            <div style="margin-top:20px">
+            <div class="preset-table">
+              <h3>Appliance presets — editable estimates</h3>
+              <p class="muted">Enter quantity and measured or nameplate watts.</p>
               <>
-                <h3>Appliance presets — editable estimates</h3>
-                <p class="muted">Enter quantity and measured or nameplate watts.</p>
+                <div class="preset-header" aria-hidden="true">
+                  <>
+                    <span>Appliance</span>
+                    <span>Qty</span>
+                    <span>Watts each</span>
+                  </>
+                </div>
                 <div id="appliances">
                   {presets.map(([label, watts], i) => (
                     <div class="presetrow">
@@ -120,19 +123,21 @@ const ld = {
               </>
             </div>
           ) : null
-        }<p id="error" role="alert" style="color:#bf3e35" hidden></p><button
-          class="primary"
-          type="submit">Calculate result →</button>
+        }<p id="error" role="alert" hidden></p><button class="primary" type="submit"
+          >Calculate result →</button
+        >
       </form>
-    </div><div>
+    </div><div class="sticky-col">
       <div class="result" role="status" aria-live="polite" aria-atomic="true">
-        <small>Estimated result</small><div class="big" id="answer">—</div><p id="detail">
+        <div class="result-header">
+          <span class="status-dot" aria-hidden="true"></span><span>Estimated result</span>
+        </div><div class="big" id="answer">—</div><p id="detail">
           Adjust values to see your estimate.
         </p>
       </div><div class="ad" aria-label="Reserved advertising space">Future ad placement</div><div
         class="panel"
       >
-        <h3>Important</h3><p class="muted">
+        <h3>Important note</h3><p class="muted">
           Estimates only. Check equipment ratings, installation requirements and battery or
           generator manufacturer guidance.
         </p>
@@ -140,7 +145,9 @@ const ld = {
     </div>
   </div><div class="info section">
     <section>
-      <h2>Formula used</h2><p>{d.formula}</p><h3>Worked example</h3><p>{d.example}</p>
+      <h2>Formula used</h2><div class="formula-box">{d.formula}</div><h3>Worked example</h3><p>
+        {d.example}
+      </p>
     </section><section>
       <h2>Assumptions</h2><p>{d.assumptions}</p><h3>Common mistakes</h3><ul>
         {d.mistakes.map((m) => <li>{m}</li>)}
@@ -149,11 +156,9 @@ const ld = {
   </div><section class="panel section">
     <h2>Frequently asked questions</h2>{
       d.faq.map(([q, a]) => (
-        <div>
-          <>
-            <h3>{q}</h3>
-            <p>{a}</p>
-          </>
+        <div class="faq-item">
+          <h3>{q}</h3>
+          <p class="muted">{a}</p>
         </div>
       ))
     }
@@ -162,10 +167,17 @@ const ld = {
       {
         (related.length ? related : tools.filter((t) => t[0] !== slug).slice(0, 3)).map((t) => (
           <a class="card" href={`/calculators/${t[0]}`}>
-            <>
+            <div class="card-top">
               <span class="pill">{t[2]}</span>
-              <h3>{t[1]} →</h3>
-            </>
+            </div>
+            <h3>
+              <>
+                <span>{t[1]}</span>
+                <span class="arrow" aria-hidden="true">
+                  →
+                </span>
+              </>
+            </h3>
           </a>
         ))
       }
