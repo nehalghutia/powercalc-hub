@@ -4,19 +4,28 @@ import { tools } from '../lib/data';
 ---
 
 <Base
-  ><section class="hero">
-    <div class="eyebrow">Smarter energy decisions</div><h1>
-      Power calculations,<br /><span style="color:#008c7d">made simple.</span>
-    </h1><p class="muted">
-      Free power, battery, inverter and solar calculators. Transparent formulas, adjustable
-      assumptions, no sign-up.
-    </p><label for="search" class="muted">Find a calculator</label><input
-      id="search"
-      class="search"
-      type="search"
-      placeholder="Try battery backup, UPS, solar, electricity…"
-      style="max-width:600px"
-    />
+  ><section class="hero hero-depth">
+    <div class="hero-copy">
+      <div class="eyebrow">Smarter energy decisions</div><h1>
+        Power calculations,<br /><span style="color:#008c7d">made simple.</span>
+      </h1><p class="muted">
+        Free power, battery, inverter and solar calculators. Transparent formulas, adjustable
+        assumptions, no sign-up.
+      </p><label for="search" class="muted">Find a calculator</label><input
+        id="search"
+        class="search"
+        type="search"
+        placeholder="Try battery backup, UPS, solar, electricity…"
+        style="max-width:600px"
+      />
+    </div><div class="energy-scene" aria-hidden="true">
+      <div class="scene-halo"></div><div class="scene-orbit"></div><div class="energy-platform">
+      </div><div class="energy-sun"></div><div class="energy-battery">
+        <span class="energy-bolt">ϟ</span><span class="energy-bars"
+          ><i></i><i></i><i></i><i></i></span>
+      </div><div class="energy-panel"></div><div class="energy-spark">✦</div><span
+        class="scene-caption">A little clarity. A lot of energy.</span>
+    </div>
   </section><section id="calculators" class="section">
     <h2>Popular calculators</h2><div class="grid" id="cards">
       {
@@ -27,7 +36,20 @@ import { tools } from '../lib/data';
             href={`/calculators/${slug}`}
           >
             <>
-              <span class="pill">{category}</span>
+              <>
+                <span class="tool-icon" aria-hidden="true">
+                  {category === 'Solar'
+                    ? '☀'
+                    : category === 'Electricity'
+                      ? 'ϟ'
+                      : category === 'Generator'
+                        ? '↻'
+                        : category === 'UPS'
+                          ? '▣'
+                          : '▰'}
+                </span>
+                <span class="pill">{category}</span>
+              </>
               <h3 style="margin-top:10px">{name} →</h3>
               <p>{description}</p>
             </>
