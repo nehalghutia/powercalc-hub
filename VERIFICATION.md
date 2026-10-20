@@ -1,3 +1,20 @@
+# Production release — 20 October 2026
+
+The user approved production publication on 20 October 2026. The previously blocked deployment step is now complete.
+
+- Public website: https://powercalc-hub.vercel.app/
+- Deployed source: 3c63eaebe30ddd95eb9286b5add7c3f3b89c9d07 on feat/import-astro-project.
+- Vercel production deployment: powercalc-eutkjxwvj-global-time-compare.vercel.app (Ready).
+- Build uses PUBLIC_SITE_URL=https://powercalc-hub.vercel.app; production pages have matching canonical URLs and no noindex directive.
+- Re-ran check, 58 tests, build, built-route verification and npm audit successfully; zero vulnerabilities.
+- Anonymous HTTP checks: all 13 pages plus sitemap index, sitemap and robots.txt returned 200.
+- Browser check: UPS calculator changed from 0.5 to 0.25 hours when load increased from 120 to 240 W.
+- Deployment came from the feature branch; PR #1 remains open. Git auto-deployment is not connected.
+
+The initial report below is historical and describes the earlier no-production restriction.
+
+---
+
 # Verification — 18 October 2026
 
 Environment: existing congenial goggles Codespace; Node.js 24.21.0.
